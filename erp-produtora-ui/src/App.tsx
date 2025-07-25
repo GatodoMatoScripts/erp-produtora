@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuthStore } from './store/authStore';
+import { LoginPage } from './pages/LoginPage';
+import { MainLayout } from './components/shared/MainLayout';
+import { AgenciasPage } from './pages/AgenciasPage';
+
+function DashboardPage() {
+  return <h1>Dashboard Principal</h1>;
+}
+
+function ProtectedLayout() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  return isAuthenticated ? <MainLayout /> : <Navigate to="/login" />;
+}
+
+function LoginRoute() {
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+    return isAuthenticated ? <Navigate to="/dashboard" /> : <LoginPage />;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LoginRoute />} />
+        
+        <Route element={<ProtectedLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/agencias" element={<AgenciasPage />} />
+          {/* Adicione outras rotas protegidas aqui no futuro */}
+        </Route>
+
+        <Route path="*" element={<h1>Página Não Encontrada</h1>} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
-export default App
+export default App;
