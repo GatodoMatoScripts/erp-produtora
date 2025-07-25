@@ -1,0 +1,15 @@
+# Dependencies
+/erp-produtora-backend/node_modules
+/erp-produtora-ui/node_modules
+
+# Build output
+/erp-produtora-ui/dist
+
+# Cache
+/erp-produtora-ui/.vite
+
+# Secrets
+/erp-produtora-backend/.env
+
+# System files
+.DS_Store
