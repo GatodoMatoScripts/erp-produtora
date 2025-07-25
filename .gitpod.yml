@@ -1,0 +1,21 @@
+tasks:
+  - name: Database
+    init: |
+      mysql-ctl start
+      mysql -u root -e "CREATE DATABASE IF NOT EXISTS erp_produtora;"
+      mysql -u root erp_produtora < database/dump.sql
+    command: mysql-ctl status
+  - name: Backend
+    init: cd erp-produtora-backend && npm install
+    command: cd erp-produtora-backend && npm run dev
+  - name: Frontend
+    init: cd erp-produtora-ui && npm install && npm install -D tailwindcss-animate
+    command: cd erp-produtora-ui && npm run dev
+
+ports:
+  - name: Frontend
+    port: 5173
+    onOpen: open-preview
+  - name: Backend
+    port: 3001
+    onOpen: ignore
