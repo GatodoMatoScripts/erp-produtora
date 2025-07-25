@@ -16,7 +16,17 @@ const portalRoutes = require('./routes/portalRoutes');
 
 const app = express();
 
-app.use(cors());
+// --- CONFIGURAÇÃO DE CORS ROBUSTA ---
+const corsOptions = {
+  origin: process.env.FRONTEND_URL, // Permite acesso apenas da URL do nosso frontend
+  optionsSuccessStatus: 200 // Para navegadores antigos
+};
+
+app.use(cors(corsOptions));
+// Habilita o preflight para todas as rotas
+app.options('*', cors(corsOptions));
+// --- FIM DA CONFIGURAÇÃO DE CORS ---
+
 app.use(express.json());
 
 // Rota base da API
