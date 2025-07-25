@@ -1,15 +1,15 @@
 tasks:
-  - name: Database
-    init: |
-      mysql-ctl start
-      mysql -u root -e "CREATE DATABASE IF NOT EXISTS erp_produtora;"
-      mysql -u root erp_produtora < database/dump.sql
-    command: mysql-ctl status
-  - name: Backend
+  - name: Database & Backend
+    before: |
+      echo "Aguardando o MySQL iniciar..."
+      gp await-port 3306
+      echo "MySQL está pronto. Importando dados..."
+      mysql -u root -psenha_segura -h 127.0.0.1 erp_produtora < database/dump.sql
+      echo "Importação concluída."
     init: cd erp-produtora-backend && npm install
     command: cd erp-produtora-backend && npm run dev
   - name: Frontend
-    init: cd erp-produtora-ui && npm install && npm install -D tailwindcss-animate
+    init: cd erp-produtora-ui && npm install
     command: cd erp-produtora-ui && npm run dev
 
 ports:
