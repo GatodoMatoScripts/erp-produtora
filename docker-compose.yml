@@ -1,0 +1,18 @@
+# docker-compose.yml (versão final e moderna)
+services:
+  db:
+    image: mysql:8.0
+    # O comando abaixo garante que o MySQL use o método de autenticação legado,
+    # que é mais compatível com nosso driver Node.js (mysql2).
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'erp_produtora'
+      MYSQL_ROOT_PASSWORD: 'senha_segura'
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
