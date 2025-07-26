@@ -1,3 +1,4 @@
+
 import path from "path"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
@@ -9,15 +10,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // ADICIONE ESTA SEÇÃO PARA PERMITIR O ACESSO VIA GITPOD
   server: {
-    hmr: {
-      host: '5173-gatodomatos-erpprodutor-ms2v6vvl4lp.ws-us120.gitpod.io',
-      protocol: 'wss'
-    },
-    host: '0.0.0.0',
+    host: '0.0.0.0', // Permite que o Vite seja acessado de fora do container
     port: 5173,
+    hmr: {
+      // Garante que o Hot Module Replacement funcione corretamente no Gitpod
+      clientPort: 443,
+    },
   }
 })
-
-// teste
